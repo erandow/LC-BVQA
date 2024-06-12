@@ -1,0 +1,8 @@
+train_size: 0.75
+
+batch_size: 32
+epochs: 2
+learning_rate: 0.001
+
+image_name_column_keyword: 'image'
+label_column_keyword: 'label'

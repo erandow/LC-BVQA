@@ -88,7 +88,8 @@ class ImageQualityDataset(Dataset):
         image_path = os.path.join(self.images_path, self.image_names[idx])
 
         label = self.labels.loc[
-            self.labels["image"] == self.image_names[idx], "label"
+            self.labels[config["image_name_column_keyword"]] == self.image_names[idx],
+            config["label_column_keyword"],
         ].values[0]
 
         image = Image.open(image_path)
@@ -240,7 +241,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    config = load_config("train_FE_model_config.yaml")
+    config = load_config("config.yaml")
 
     image_dataset = ImageQualityDataset(args.dataset_path, args.csv_path)
 
@@ -254,7 +255,7 @@ if __name__ == "__main__":
     )
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    print("\033[31m\nDevice: {}\n\033[0m".format(device))
+    print("\033[92m\nDevice: {}\n\033[0m".format(device))
 
     batch_size = config["batch_size"]
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
