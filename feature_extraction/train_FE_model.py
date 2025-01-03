@@ -30,32 +30,13 @@ import yaml
 
 import torchvision.transforms as transforms
 
+from models import get_regressor_model
+
 
 def load_config(config_file):
     with open(config_file, "r") as file:
         config = yaml.safe_load(file)
     return config
-
-
-class InceptionV3Regressor(nn.Module):
-
-    def __init__(self):
-
-        super(InceptionV3Regressor, self).__init__()
-
-        self.inception = models.inception_v3(
-            weights=models.Inception_V3_Weights.DEFAULT
-        )
-
-        self.inception.fc = nn.Sequential(
-            nn.Linear(2048, 1024), nn.ReLU(inplace=True), nn.Linear(1024, 1)
-        )
-
-    def forward(self, x):
-
-        x = self.inception(x)
-
-        return x
 
 
 class ImageQualityDataset(Dataset):
@@ -262,14 +243,16 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     dataloaders = {"train": train_loader, "val": test_loader}
 
-    model = InceptionV3Regressor()
+    model = get_regressor_model(config["model"])
     model = model.to(device)
 
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=config["learning_rate"])
+    optimizer = torch.optim.SGD(
+        model.parameters(), lr=config["learning_rate"], momentum=0.7
+    )
 
     trained_model = train_model(
         model, dataloaders, criterion, optimizer, device, num_epochs=config["epochs"]
     )
 
-    torch.save(trained_model.state_dict(), "trained_model.pth")
+    torch.save(trained_model.state_dict(), "trained_model_SGD_4.pth")

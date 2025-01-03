@@ -11,14 +11,15 @@ python .\train_FE_model.py --dataset_path "path_to_dataset_images" --csv_path "p
 
 This file contains all the hyperparameters and configurations needed for training. You can customize the fine-tuning process within this file.
 
-| Hyperparameter                | Value      |
-|-------------------------------|------------|
-| `learning_rate`               | 0.001      |
-| `batch_size`                  | 32         |
-| `epochs`                      | 50         |
-| `train_size`                  | 0.75       |
-| `image_name_column_keyword`   | "image"    |
-| `model.label_column_keyword`  | "label"    |
+| Hyperparameter                | Value       |
+|-------------------------------|-------------|
+| `learning_rate`               | 0.001       |
+| `batch_size`                  | 32          |
+| `epochs`                      | 50          |
+| `train_size`                  | 0.75        |
+| `image_name_column_keyword`   | "image"     |
+| `model.label_column_keyword`  | "label"     |
+| `model`                       | "inception" |
 
 ## 2. Preparing the Dataset
 
@@ -31,3 +32,6 @@ All images for training must be placed in a single folder. Sub-folders are not s
 The image scores should be saved in a CSV file. This file must have two columns: one for the image names and another for the labels.
 
 - The key of each column can be changed from the `config.yaml` file.
+
+## 3. Selecting the model
+Three different models exists in the `models.py` for being trained on ImageQuality datasets, the model can be selected by its name in the config file with key `model` key.
