@@ -1,4 +1,11 @@
-def plot_correlation(y_gt, y_pred, sc, num, srocc, dataset=None, cross_dataset=None):
+import seaborn as sns
+import matplotlib.pyplot as plt
+import os
+
+
+def plot_correlation(
+    y_gt, y_pred, sc, num, srocc, dataset=None, cross_dataset=None, path=""
+):
     """Plot SROCC of predicted and ground-truth scores
 
     :param y_gt: Subjective MOSs of the validation or test set
@@ -43,4 +50,7 @@ def plot_correlation(y_gt, y_pred, sc, num, srocc, dataset=None, cross_dataset=N
     ).set(xlabel="Ground-truth MOS", ylabel="Predicted Score")
 
     plt.close()
-    scatter_plot.savefig(file_path)
+
+    # Create directories if not exists
+    os.makedirs(os.path.dirname(os.path.join(path, file_path)), exist_ok=True)
+    scatter_plot.savefig(os.path.join(path, file_path))

@@ -75,8 +75,14 @@ def pooling(
 
 
 pooling(
-    "D:\\IPRIA\\LiveVQA\\Spatial Features",
-    "D:\\IPRIA\\LiveVQA\\Pooled Features",
+    "D:\\IPRIA\\KoNViD-1k\\Spatial Features",
+    "D:\\IPRIA\\KoNViD-1k\\Pooled Features",
+    ["inception.avgpool", "inception.Mixed_5b.cat", "inception.Mixed_5c.cat"],
+    method="avg",
+)
+pooling(
+    "D:\\IPRIA\\KoNViD-1k\\Spatial Features",
+    "D:\\IPRIA\\KoNViD-1k\\Pooled Features",
     ["inception.avgpool", "inception.Mixed_5b.cat", "inception.Mixed_5c.cat"],
     method="max",
 )

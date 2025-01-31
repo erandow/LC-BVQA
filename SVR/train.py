@@ -4,9 +4,11 @@ from sklearn.model_selection import KFold
 from sklearn.svm import SVR
 from plot_correlation import plot_correlation
 from calc_correlation import calc_correlation
+import joblib
+import os
 
 
-def train(X, y, kernel="rbf", epochs=20, n_splits=5):
+def train(X, y, kernel="rbf", epochs=20, n_splits=5, path=""):
     SROCC_coef, SROCC_p, PLCC = [], [], []
     best_acc = 0
     best_model = None
@@ -33,7 +35,7 @@ def train(X, y, kernel="rbf", epochs=20, n_splits=5):
             # Predict the scores for X_test videos features
             y_pred = regressor.predict(X_test)
 
-            srocc, p, plcc = calc_correlation(y_test, y_pred, sc_y)
+            srocc, p, plcc = calc_correlation(y_test, y_pred, sc_y, path=path)
             if plcc > best_acc:
                 best_acc = plcc
                 best_model = regressor
@@ -42,4 +44,12 @@ def train(X, y, kernel="rbf", epochs=20, n_splits=5):
             SROCC_p.append(p)
             PLCC.append(plcc)
 
-            plot_correlation(y_test, y_pred, sc_y, len(SROCC_coef), srocc)
+            plot_correlation(y_test, y_pred, sc_y, len(SROCC_coef), srocc, path=path)
+    if best_model is not None:
+        joblib.dump(best_model, os.path.join(path, "best_svr_model2.joblib"))
+        joblib.dump(sc_X, os.path.join(path, "sc_X.joblib"))
+        joblib.dump(sc_y, os.path.join(path, "sc_y.joblib"))
+
+        print("Best model saved as 'best_svr_model.joblib'")
+    else:
+        print("No best model found to save.")

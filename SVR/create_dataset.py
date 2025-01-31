@@ -1,3 +1,10 @@
+import os
+
+import pandas as pd
+import numpy as np
+import torch
+
+
 def create_dataset(
     features_path,
     mos_path,
@@ -34,9 +41,7 @@ def create_dataset(
                     (feature_data, feature.flatten().cpu().numpy())
                 )
 
-        video_mos = mos_df.loc[
-            mos_df[video_label] == video_name + ".mp4", mos_label
-        ].values[0]
+        video_mos = mos_df.loc[mos_df[video_label] == video_name, mos_label].values[0]
 
         names.append(video_name)
         X.append(feature_data)

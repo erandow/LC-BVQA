@@ -1,4 +1,9 @@
-def calc_correlation(y_gt, y_pred, sc, dataset=None, delimiter="-"):
+from scipy.stats.mstats import spearmanr
+from scipy.stats.mstats import pearsonr
+import os
+
+
+def calc_correlation(y_gt, y_pred, sc, dataset=None, delimiter="-", path=""):
     """Calculate SROCC with p and PLCC
 
     :param y_gt: Subjective MOSs of the validation or test set
@@ -28,7 +33,7 @@ def calc_correlation(y_gt, y_pred, sc, dataset=None, delimiter="-"):
     plcc, _ = pearsonr(y_gt.squeeze(), y_pred.squeeze())
 
     text = f"Spearman correlation = {srocc:.4f} with p = {p:.4f},  Pearson correlation = {plcc:.4f}\n"
-    with open("correlation.txt", "a") as writer:
+    with open(os.path.join(path, "correlation.txt"), "a") as writer:
         writer.write(text)
         writer.write(delimiter * 70 + "\n")
 
